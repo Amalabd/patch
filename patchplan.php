@@ -51,17 +51,23 @@ include_once("pf.php");
 
        // Adding the first row for the horizontal headings
        echo "<tr>";
-       for ($i = 'A'; $i <= 'Z'; $i++) {
-         echo "<th>" . $i. "</th>";
+       echo "<th></th>";
+       for ($i = 0; $i <26; $i++) {
+        $ch= chr($i + 65);
+         echo "<th>" . $ch. "</th>";
        }
        echo "</tr>";
        
-       // Adding the remaining rows with the vertical headings
+//============Rows =========
        for ($j = 1; $j <= 25; $j++) {
          echo "<tr>";
-         // Adding the first column for the vertical headings
-         echo "<td>" . $j . "</td>";
 
+         echo "<td>" . $j . "</td>";
+// ============= Cells =======
+         for ($i = 0; $i <26; $i++) {
+          echo "<td></td>";
+         }
+echo '</tr>';
        }
        
        echo "</table>";
@@ -95,3 +101,8 @@ include_once("pf.php");
           
           // Close the database connection
           mysqli_close($conn);
+
+          ?>
+          </main>
+        </body>
+        </html>
