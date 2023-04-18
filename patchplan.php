@@ -65,7 +65,18 @@ include_once("pf.php");
          echo "<td>" . $j . "</td>";
 // ============= Cells =======
          for ($i = 0; $i <26; $i++) {
-          echo "<td></td>";
+          echo "<td>";
+          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan, geraete_ip, port, belegt, gepatcht FROM patchplan WHERE koordinate_1 =? AND koordinate_2 =?");
+          mysqli_stmt_bind_param($stmt, "ss", $j, $i);
+          mysqli_stmt_execute($stmt);
+          mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$geraete_ip,$port,$belegt,$gepatcht);
+
+          if( mysqli_stmt_fetch($stmt) == true){
+echo  "<br> raum_nutzer: ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). "<br>". 
+"geraete_ip : " .htmlspecialchars($geraete_ip). "<br>"."port : " .htmlspecialchars($port). "<br>".
+"belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
+
+          echo "</td>";
          }
 echo '</tr>';
        }
