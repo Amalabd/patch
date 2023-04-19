@@ -84,7 +84,7 @@ echo "<td>" . $rws2[0] . "</td>";
          for ($i = 1; $i <=24; $i++) {
           
           echo "<td>";
-         $id= intval($res) * 24 + $i;
+         $id= $res[0] * 24 + $i;
         
           $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id=? ");
           mysqli_stmt_bind_param($stmt, "s",$id);
