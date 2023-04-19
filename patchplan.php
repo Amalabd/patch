@@ -46,34 +46,36 @@ include_once("pf.php");
 
         <?php
       
-       echo "<table class='table table-bordered'>";
+       echo "<table class='table table-bordered table-striped'>";
     
 
        // Adding the first row for the horizontal headings
        echo "<tr>";
        echo "<th></th>";
-       for ($i = 0; $i <26; $i++) {
-        $ch= chr($i + 65);
-         echo "<th>" . $ch. "</th>";
+       // ========= Columns ======
+       // In ASCII from A to Z has values (65-90), then I use chr() to convert numbers to letters ($i = 65; $i <91; $i++)
+       for ($i = 1; $i <=24; $i++) {
+       
+         echo "<th>" . $i. "</th>";
        }
        echo "</tr>";
        
 //============Rows =========
-       for ($j = 1; $j <= 25; $j++) {
+       for ($j = 0; $j <26; $j++) {
          echo "<tr>";
 
-         echo "<td>" . $j . "</td>";
+         echo "<td>" . chr($j+65) . "</td>";
 // ============= Cells =======
-         for ($i = 0; $i <26; $i++) {
+         for ($i = 1; $i <=24; $i++) {
           echo "<td>";
-         $id= mysqli_quary($conn, "SELECT patch_id From patchfelder_tbl");
+         $id= $j * 25 +$i;
           $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id=? ");
           mysqli_stmt_bind_param($stmt, "s",$id);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
 
           while( mysqli_stmt_fetch($stmt)){
-echo  "<br> raum_nutzer: ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
+echo  "<br> <span class='text-primary'>raum_nutzer:</span> ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
 "<br>"."port : " .htmlspecialchars($port). "<br>".
 "belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
 
@@ -83,35 +85,7 @@ echo '</tr>';
        }
        
        echo "</table>";
-          /*
-            // Loop through each letter column
-            for ($j = 1; $j <= 26; $j++) {
-              echo "<td>";
-// Loop through each row to get data for the cell
-              for ($k = 0; $k < $num_rows; $k++) {
-                if ($result_array[$k]['A'] == $j && $result_array[$k]['B'] == $i) {
-                  echo "<div class='border-bottom border-primary'>".$result_array[$k]['C']."</div>";
-                  echo "<div class='border-bottom border-primary'>".$result_array[$k]['D']."</div>";
-                  echo "<div class='border-bottom border-primary'>".$result_array[$k]['E']."</div>";
-                  echo "<div class='border-bottom border-primary'>".$result_array[$k]['F']."</div>";
-                  echo "<div class='border-bottom border-primary'>".$result_array[$k]['G']."</div>";
-                  echo "<div>".$result_array[$k]['H']."</div>";
-                }
-              }
-              
-              echo "</td>";
-            }
-            
-            echo "</tr>";
-          }
-          
-          echo "</tbody>";
-          echo "</table>";
-        */
-          // Free the result set
-      //    mysqli_free_result($result);
-          
-          // Close the database connection
+
           mysqli_close($conn);
 
           ?>
