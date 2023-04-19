@@ -62,6 +62,9 @@ include_once("pf.php");
        
 //============Rows =========
        for ($j = 0; $j <26; $j++) {
+        if($j == $j + 75){
+          continue;
+        }
          echo "<tr>";
 
          echo "<td>" . chr($j+65) . "</td>";
