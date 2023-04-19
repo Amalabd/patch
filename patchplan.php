@@ -63,28 +63,30 @@ include_once("pf.php");
 //============Rows =========
 
 $qry= "SELECT  DISTINCT(koordinate_2) FROM patchfelder_tbl";
-//$qry2= "SELECT koordinate_2 FROM patchfelder_tbl";
+$qry2= "SELECT koordinate_2 FROM patchfelder_tbl";
 $rw = mysqli_query($conn, $qry);
-//$rw2 = mysqli_query($conn, $qry2);
+$rw2 = mysqli_query($conn, $qry2);
 
-$rws= mysqli_num_rows($rw2);
 $res= mysqli_fetch_array($rw2);
+$rws= mysqli_num_rows($res);
 
 
      //  for ($j = 0; $j <=25; $j++)
-     while($row= mysqli_fetch_assoc($rw)) {
-      $koor = $row["koor"];
+     while($row= mysqli_fetch_array($rw)) {
+     
         
         
          echo "<tr>";
 
-echo "<td>" . $koor . "</td>";
+echo "<td>" . $row[0] . "</td>";
          
 // ============= Cells =======
          for ($i = 1; $i <=24; $i++) {
           
           echo "<td>";
-         $id= $res[0] * 24 + $i;
+          echo $rws;
+          
+         //$id= $res[0];
         
           $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id=? ");
           mysqli_stmt_bind_param($stmt, "s",$id);
