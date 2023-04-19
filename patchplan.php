@@ -53,7 +53,7 @@ include_once("pf.php");
        echo "<tr>";
        echo "<th></th>";
        // ========= Columns ======
-       // In ASCII from A to Z has values (65-90), then I use chr() to convert numbers to letters ($i = 65; $i <91; $i++)
+
        for ($i = 1; $i <=24; $i++) {
        
          echo "<th>" . $i. "</th>";
@@ -63,22 +63,22 @@ include_once("pf.php");
 //============Rows =========
 
 $qry= "SELECT  DISTINCT(koordinate_2) FROM patchfelder_tbl";
-$qry2= "SELECT koordinate_2 FROM patchfelder_tbl";
+//$qry2= "SELECT koordinate_2 FROM patchfelder_tbl";
 $rw = mysqli_query($conn, $qry);
-$rw2 = mysqli_query($conn, $qry2);
+//$rw2 = mysqli_query($conn, $qry2);
 
 $rws= mysqli_num_rows($rw2);
 $res= mysqli_fetch_array($rw2);
 
 
      //  for ($j = 0; $j <=25; $j++)
-     while($rws2= mysqli_fetch_array($rw)) {
-      
+     while($row= mysqli_fetch_assoc($rw)) {
+      $koor = $row["koor"];
         
         
          echo "<tr>";
 
-echo "<td>" . $rws2[0] . "</td>";
+echo "<td>" . $koor . "</td>";
          
 // ============= Cells =======
          for ($i = 1; $i <=24; $i++) {
