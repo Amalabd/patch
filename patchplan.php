@@ -66,14 +66,15 @@ include_once("pf.php");
 // ============= Cells =======
          for ($i = 0; $i <26; $i++) {
           echo "<td>";
-          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan, geraete_ip, port, belegt, gepatcht FROM patchplan WHERE koordinate_1 =? AND koordinate_2 =?");
-          mysqli_stmt_bind_param($stmt, "ss", $j, $i);
+         $id= mysqli_quary($conn, "SELECT patch_id From patchfelder_tbl");
+          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id=? ");
+          mysqli_stmt_bind_param($stmt, "s",$id);
           mysqli_stmt_execute($stmt);
-          mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$geraete_ip,$port,$belegt,$gepatcht);
+          mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
 
-          if( mysqli_stmt_fetch($stmt) == true){
-echo  "<br> raum_nutzer: ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). "<br>". 
-"geraete_ip : " .htmlspecialchars($geraete_ip). "<br>"."port : " .htmlspecialchars($port). "<br>".
+          while( mysqli_stmt_fetch($stmt)){
+echo  "<br> raum_nutzer: ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
+"<br>"."port : " .htmlspecialchars($port). "<br>".
 "belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
 
           echo "</td>";
