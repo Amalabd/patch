@@ -45,9 +45,18 @@ include_once("pf.php");
 
 
         <?php
-      
+
+$qry= mysqli_query($conn, "SELECT  DISTINCT(koordinate_2) FROM patchfelder_tbl");
+$qry2= mysqli_query($conn, "SELECT raum_nutzer , vlan , port, belegt, gepatcht FROM patchfelder_tbl ORDER BY patch_id");
+
+
+$row= mysqli_fetch_array($qry);
+$res= mysqli_fetch_array($qry2);
+
+$count = count($res);
+$count2= count($row);
+  
        echo "<table class='table table-bordered table-striped'>";
-    
 
        // Adding the first row for the horizontal headings
        echo "<tr>";
@@ -62,36 +71,32 @@ include_once("pf.php");
        
 //============Rows =========
 
-$qry= "SELECT  DISTINCT(koordinate_2) FROM patchfelder_tbl";
-$qry2= "SELECT koordinate_2 FROM patchfelder_tbl";
-$rw = mysqli_query($conn, $qry);
-$rw2 = mysqli_query($conn, $qry2);
 
-$res= mysqli_fetch_array($rw2);
-
-     while($row= mysqli_fetch_array($rw)) {
+while($row= mysqli_fetch_array($qry)) {
      
-        
-        
+      
+       
          echo "<tr>";
 
 echo "<td>" . $row[0] . "</td>";
+
          
 // ============= Cells =======
          for ($i = 1; $i <=24; $i++) {
-          
-          echo "<td>";
-         // echo $rws;
-          //echo $res[0]++;
-         $id = $rw2;
         
-          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE koordinate_2=? ");
+          echo "<td>";
+          for($j=0;$j< count($res);$j++){
+   $id=$res[$j]*$i;}
+
+      
+
+          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id=? ");
           mysqli_stmt_bind_param($stmt, "s",$id);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
 
           while( mysqli_stmt_fetch($stmt)){
-
+            
             
 echo  "<br> <span class='text-primary'>raum_nutzer:</span> ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
 "<br>"."port : " .htmlspecialchars($port). "<br>".
@@ -99,9 +104,9 @@ echo  "<br> <span class='text-primary'>raum_nutzer:</span> ". htmlspecialchars($
 
           echo "</td>";
          }
-echo '</tr>';
+
        }
-       
+       echo '</tr>';
        echo "</table>";
 
           mysqli_close($conn);
