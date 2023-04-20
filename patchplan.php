@@ -68,9 +68,6 @@ $rw = mysqli_query($conn, $qry);
 $rw2 = mysqli_query($conn, $qry2);
 
 $res= mysqli_fetch_array($rw2);
-$rws= mysqli_num_rows($rw2);
-
-
 
      while($row= mysqli_fetch_array($rw)) {
      
@@ -86,7 +83,7 @@ echo "<td>" . $row[0] . "</td>";
           echo "<td>";
          // echo $rws;
           //echo $res[0]++;
-         $id = 'A';
+         $id = $rw2;
         
           $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE koordinate_2=? ");
           mysqli_stmt_bind_param($stmt, "s",$id);
@@ -94,6 +91,8 @@ echo "<td>" . $row[0] . "</td>";
           mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
 
           while( mysqli_stmt_fetch($stmt)){
+
+            
 echo  "<br> <span class='text-primary'>raum_nutzer:</span> ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
 "<br>"."port : " .htmlspecialchars($port). "<br>".
 "belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
