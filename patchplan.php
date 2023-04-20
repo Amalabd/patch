@@ -68,10 +68,10 @@ $rw = mysqli_query($conn, $qry);
 $rw2 = mysqli_query($conn, $qry2);
 
 $res= mysqli_fetch_array($rw2);
-$rws= mysqli_num_rows($res);
+$rws= mysqli_num_rows($rw2);
 
 
-     //  for ($j = 0; $j <=25; $j++)
+
      while($row= mysqli_fetch_array($rw)) {
      
         
@@ -84,11 +84,11 @@ echo "<td>" . $row[0] . "</td>";
          for ($i = 1; $i <=24; $i++) {
           
           echo "<td>";
-          echo $rws;
-          
-         //$id= $res[0];
+         // echo $rws;
+          //echo $res[0]++;
+         $id = 'A';
         
-          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id=? ");
+          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE koordinate_2=? ");
           mysqli_stmt_bind_param($stmt, "s",$id);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
