@@ -47,15 +47,17 @@ include_once("pf.php");
         <?php
 
 $qry= mysqli_query($conn, "SELECT  DISTINCT(koordinate_2) FROM patchfelder_tbl");
-$qry2= mysqli_query($conn, "SELECT patch_id FROM patchfelder_tbl");
+$qry2= mysqli_query($conn, "SELECT patch_id ,raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl ORDER BY patch_id");
 
 
 $row= mysqli_fetch_array($qry);
 $res= mysqli_fetch_array($qry2);
+var_dump($res);
 
-$count = count($res);
+$count = mysqli_num_rows($qry2);
+var_dump($count);
 $count2= count($row);
-  
+
        echo "<table class='table table-bordered table-striped'>";
 
        // Adding the first row for the horizontal headings
@@ -71,47 +73,51 @@ $count2= count($row);
        
 //============Rows =========
 
-
 while($row= mysqli_fetch_array($qry)) {
      
-      
-       
+   
+   
          echo "<tr>";
 
-echo "<td>" . $row[0] . "</td>";
+echo "<td>" . $row[0]. "</td>";
 
          
 // ============= Cells =======
-         for ($j = 0; $j <24; $j++) {
-          
-        
- 
-      
-          echo "<td>";
-          if($row['koordinate_2'])
-{
-  $id= $res['patch_id'] +$j;
-}
 
+foreach($res as $rr){
+for($j=0;$j<=24;$j++){
+  
+  
+   
          
 
-          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id = ? ");
+  echo "<td>";
+ 
+$id =($rr ['patch_id']);
+
+
+
+              
+     
+
+          $stmt=mysqli_prepare($conn, "SELECT patch_id ,raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id = ? ");
           mysqli_stmt_bind_param($stmt, "i", $id);
           mysqli_stmt_execute($stmt);
-          mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
+          mysqli_stmt_bind_result($stmt,$patch_id,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
 
           while( mysqli_stmt_fetch($stmt)){
            
             
-echo  "<br> <span class='text-primary'>raum_nutzer:</span> ". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
+echo  "<br> <span class='text-primary'>patch_id:</span> ". htmlspecialchars($patch_id). "<br>" . "raum_nutzer:". htmlspecialchars($raum_nutzer). "<br>" . "vlan : " .htmlspecialchars($vlan). 
 "<br>"."port : " .htmlspecialchars($port). "<br>".
 "belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
 
           echo "</td>";
-         }
+         }}}
 
-       }
+       
        echo '</tr>';
+     
        echo "</table>";
 
           mysqli_close($conn);
