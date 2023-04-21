@@ -38,7 +38,7 @@ include_once("pf.php");
 </nav>
 
 <!------The table---->
-<main class="container-fluid mt-5 p-5 border border-secondary rounded-3 shadow" style="background-color: rgba(255,255,255, 0.3);">
+<main class=" mt-5 p-5 border border-secondary rounded-3 shadow" style="background-color: rgba(255,255,255, 0.3);">
   <section>
     <h3 class="text-decoration-underline mb-5">Patch-Table</h3>
   </section>
@@ -46,19 +46,14 @@ include_once("pf.php");
 
         <?php
 
-$qry= mysqli_query($conn, "SELECT  DISTINCT(koordinate_2) FROM patchfelder_tbl");
-$qry2= mysqli_query($conn, "SELECT patch_id ,raum_nutzer ,vlan,port, belegt, gepatcht FROM patchfelder_tbl ORDER BY patch_id");
+$qry= mysqli_query($conn, "SELECT  DISTINCT(koordinate_2)FROM patchfelder_tbl");
+$qry2= mysqli_query($conn, "SELECT * FROM patchfelder_tbl ORDER BY patch_id");
 
 
 $row= mysqli_fetch_array($qry);
 $res= mysqli_fetch_all($qry2, MYSQLI_ASSOC);
 
-
-$count = mysqli_num_rows($qry2);
-var_dump($count);
-$count2= count($row);
-
-       echo "<table class='table table-bordered table-striped'>";
+     echo "<table class='table table-bordered table-striped'>";
 
        // Adding the first row for the horizontal headings
        echo "<tr>";
@@ -73,15 +68,8 @@ $count2= count($row);
        
 //============Rows =========
 
-
-     
-   
-   
          echo "<tr>";
-
-
-
-         
+     
 // ============= Cells =======
 $cells= 0;
 foreach($res as $rr){
@@ -90,10 +78,18 @@ foreach($res as $rr){
   
 if($cells === 25){
   
-  echo  "<tr></tr>"; $cells=0;}
+  echo  "<tr></tr>"; $cells=1;}
+  
+  if($cells === 1){
+  
+ 
+    echo  "<td>". $row['koordinate_2']. "</td>"; 
+    
+  }
+
   echo "<td>";
  
-$id =($rr ['patch_id']);
+$id =$rr ['patch_id'];
 
 
 
