@@ -73,22 +73,24 @@ $count2= count($row);
        
 //============Rows =========
 
-while($row= mysqli_fetch_array($qry)) {
+
      
    
    
          echo "<tr>";
 
-echo "<td>" . $row[0]. "</td>";
+
 
          
 // ============= Cells =======
 $cells= 0;
 foreach($res as $rr){
-  echo "<td>";  echo "</td>";
+
   $cells++;
   
-if($cells == 24){  echo "<tr></tr>"; $cells=0;}
+if($cells === 25){
+  
+  echo  "<tr></tr>"; $cells=0;}
   echo "<td>";
  
 $id =($rr ['patch_id']);
@@ -111,7 +113,7 @@ echo  "<br> <span class='text-primary'>patch_id:</span> ". htmlspecialchars($pat
 "belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
 
           echo "</td>";
-         }}
+         }
 
        
        echo '</tr>';
