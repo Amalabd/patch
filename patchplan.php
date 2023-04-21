@@ -83,9 +83,12 @@ echo "<td>" . $row[0]. "</td>";
 
          
 // ============= Cells =======
-
+$cells= 0;
 foreach($res as $rr){
-
+  echo "<td>";  echo "</td>";
+  $cells++;
+  
+if($cells == 24){  echo "<tr></tr>"; $cells=0;}
   echo "<td>";
  
 $id =($rr ['patch_id']);
