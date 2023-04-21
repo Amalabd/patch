@@ -51,8 +51,8 @@ $qry2= mysqli_query($conn, "SELECT patch_id ,raum_nutzer ,vlan,port, belegt, gep
 
 
 $row= mysqli_fetch_array($qry);
-$res= mysqli_fetch_array($qry2);
-var_dump($res);
+$res= mysqli_fetch_all($qry2, MYSQLI_ASSOC);
+
 
 $count = mysqli_num_rows($qry2);
 var_dump($count);
@@ -85,11 +85,6 @@ echo "<td>" . $row[0]. "</td>";
 // ============= Cells =======
 
 foreach($res as $rr){
-for($j=0;$j<=24;$j++){
-  
-  
-   
-         
 
   echo "<td>";
  
@@ -113,7 +108,7 @@ echo  "<br> <span class='text-primary'>patch_id:</span> ". htmlspecialchars($pat
 "belegt : " .htmlspecialchars($belegt). "<br>"."gepatcht : " .htmlspecialchars($gepatcht). "<br>"."<br>";}
 
           echo "</td>";
-         }}}
+         }}
 
        
        echo '</tr>';
