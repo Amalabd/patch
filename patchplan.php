@@ -50,7 +50,7 @@ $qry= mysqli_query($conn, "SELECT  DISTINCT(koordinate_2)FROM patchfelder_tbl");
 $qry2= mysqli_query($conn, "SELECT * FROM patchfelder_tbl ORDER BY patch_id");
 
 
-$row= mysqli_fetch_array($qry);
+
 $res= mysqli_fetch_all($qry2, MYSQLI_ASSOC);
 
      echo "<table class='table table-bordered table-striped'>";
@@ -69,11 +69,11 @@ $res= mysqli_fetch_all($qry2, MYSQLI_ASSOC);
 //============Rows =========
 
          echo "<tr>";
-     
+       
 // ============= Cells =======
 $cells= 0;
 foreach($res as $rr){
-
+ 
   $cells++;
   
 if($cells === 25){
@@ -81,9 +81,9 @@ if($cells === 25){
   echo  "<tr></tr>"; $cells=1;}
   
   if($cells === 1){
-  
+    $row= mysqli_fetch_array($qry);
  
-    echo  "<td>". $row['koordinate_2']. "</td>"; 
+    echo  "<td>". $rr['koordinate_2']. "</td>"; 
     
   }
 
@@ -100,7 +100,7 @@ $id =$rr ['patch_id'];
           mysqli_stmt_bind_param($stmt, "i", $id);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$patch_id,$raum_nutzer,$vlan,$port,$belegt,$gepatcht);
-
+          
           while( mysqli_stmt_fetch($stmt)){
            
             
