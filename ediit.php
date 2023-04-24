@@ -42,8 +42,8 @@ include_once("pf.php");
 <div class="container m-5">
           
           <div class="m-3">
-
-          <table class="table"><form action=" " method="post">
+          <form action=" " method="post">
+          <table class="table">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -77,11 +77,23 @@ include_once("pf.php");
       <td><input type="text" name ="gerat" ></td>
 
     </tr>
-  </tbody></form>
+    <tr>
+      <th scope="row">5</th>
+      <td ><label><h5 class="m-3">Belegt:</h5> </label></td>
+      <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
+
+    </tr>
+    <tr>
+      <th scope="row">6</th>
+      <td ><label><h5 class="m-3">Gepatcht :</h5> </label></td>
+      <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
+
+    </tr>
+  </tbody>
 </table>
  <input type= "submit" value= "Submit" name= "up" class='btn btn-outline-success'>
 
- </div>
+ </div> </form>
   </div>
 
 <?php
@@ -93,10 +105,13 @@ if(isset($_POST["up"])){
     $gerat= $_POST["gerat"];
     
   
-      $update= "UPDATE patchfelder_tbl SET raum_nutzer='$raum', vlan='$vlan',geraete_ip='$gerat',port='$port' WHERE id=$id";
+      $update= "UPDATE patchfelder_tbl SET raum_nutzer='$raum', vlan='$vlan',geraete_ip='$gerat',port='$port' WHERE patch_id=$id";
       if (mysqli_query($conn, $update)) {
         echo "<h5 class='text-success m-5'>The record has been updated successfully! :)</h5>";
-        echo "<input type= 'submit' value= 'Back'  onclick= 'location.href=\"patchplan.php\";' class='btn btn-outline-success m-5'>";
+        echo "<input type= 'submit' name='back' value= 'Back'  onclick= 'location.href=\"patchplan.php\";' class='btn btn-outline-success m-5'>";
+        if(!isset($_POST['back'])){
+            header("refresh:5; url=patchplan.php");
+        }
      }else{ echo "<h5 class='text-danger m-5'>Didn't update! :)</h5>";}
     }
 
