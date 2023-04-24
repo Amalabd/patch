@@ -111,8 +111,8 @@ if(isset($_POST["up"])){
     $vlan= $_POST["vlan"];
     $port= $_POST["port"];
     $gerat= $_POST["gerat"];
-    $belegt= $_POST["belegt"]; if(!isset($_POST["belegt"])){ $_POST["belegt"]=0;}else{$_POST["belegt"] = 1;}  ;
-    $gepatcht= $_POST["gepatcht"]; if(!isset($_POST["gepatcht"])){$_POST["gepatcht"] = 0;}else{$_POST["gepatcht"]= 1;};
+    $belegt= isset($_POST["belegt"]) ? 1 : 0; 
+    $gepatcht= isset($_POST["gepatcht"]) ? 1 : 0; 
     
   
       $update= "UPDATE patchfelder_tbl SET raum_nutzer='$raum', vlan='$vlan',geraete_ip='$gerat',port='$port', belegt=' $belegt', gepatcht='$gepatcht' WHERE patch_id=$id";
