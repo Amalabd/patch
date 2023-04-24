@@ -21,17 +21,25 @@ include_once("pf.php");
   <title>-- Edit --</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<nav class="navbar navbar-expand-lg " style= "background-color:#EBEBEB";>
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Patch-Plan</a>
+    
+    <h4 class='fw-bold'>  <img src="logo.png" alt="" > URZ UNIVERSITÄTSRECHENZENTRUM</h4>
+    </a>
+  </div>
+</nav>
+<nav class="navbar navbar-expand-lg " style= "background-color:black;">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white fw-bold" href="#">Patch-Plan</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="#">Log-in</a>
-        <a class="nav-link" href="#">Plan</a>
+        <a class="nav-link active text-white fw-bold" aria-current="page" href="#">Log-in</a>
+        <a class="nav-link text-white fw-bold" href="#">Plan</a>
       </div>
     </div>
   </div>
@@ -43,9 +51,9 @@ include_once("pf.php");
           
           <div class="m-3">
           <form action=" " method="post">
-          <table class="table">
+          <table class="table  " >
   <thead>
-    <tr>
+    <tr style= 'background-color:#7A003F; color:white;'>
       <th scope="col">#</th>
       <th scope="col">Section</th>
       <th scope="col">Edit</th>
@@ -80,13 +88,13 @@ include_once("pf.php");
     <tr>
       <th scope="row">5</th>
       <td ><label><h5 class="m-3">Belegt:</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" name="belegt" value="" id="defaultCheck1"><?php  ?></td>
+      <td><input class="form-check-input" type="checkbox" name="belegt" value="0" id="defaultCheck1"><?php  ?></td>
 
     </tr>
     <tr>
       <th scope="row">6</th>
       <td ><label><h5 class="m-3">Gepatcht :</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" name="gepatcht" value="" id="defaultCheck1"></td>
+      <td><input class="form-check-input" type="checkbox" name="gepatcht" value="0" id="defaultCheck1"></td>
 
     </tr>
   </tbody>
@@ -103,8 +111,8 @@ if(isset($_POST["up"])){
     $vlan= $_POST["vlan"];
     $port= $_POST["port"];
     $gerat= $_POST["gerat"];
-    $belegt= $_POST["belegt"]; if(isset($_POST["belegt"])){ $_POST["belegt"]==1;}else{$_POST["belegt"] == 0;}  ;
-    $gepatcht= $_POST["gepatcht"]; if(isset($_POST["gepatcht"])){$_POST["gepatcht"] == 1;}else{$_POST["gepatcht"]== 0;};
+    $belegt= $_POST["belegt"]; if(!isset($_POST["belegt"])){ $_POST["belegt"]=0;}else{$_POST["belegt"] = 1;}  ;
+    $gepatcht= $_POST["gepatcht"]; if(!isset($_POST["gepatcht"])){$_POST["gepatcht"] = 0;}else{$_POST["gepatcht"]= 1;};
     
   
       $update= "UPDATE patchfelder_tbl SET raum_nutzer='$raum', vlan='$vlan',geraete_ip='$gerat',port='$port', belegt=' $belegt', gepatcht='$gepatcht' WHERE patch_id=$id";
