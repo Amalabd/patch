@@ -80,13 +80,13 @@ include_once("pf.php");
     <tr>
       <th scope="row">5</th>
       <td ><label><h5 class="m-3">Belegt:</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
+      <td><input class="form-check-input" type="checkbox" name="belegt" value="" id="defaultCheck1"><?php  ?></td>
 
     </tr>
     <tr>
       <th scope="row">6</th>
       <td ><label><h5 class="m-3">Gepatcht :</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
+      <td><input class="form-check-input" type="checkbox" name="gepatcht" value="" id="defaultCheck1"></td>
 
     </tr>
   </tbody>
@@ -103,9 +103,11 @@ if(isset($_POST["up"])){
     $vlan= $_POST["vlan"];
     $port= $_POST["port"];
     $gerat= $_POST["gerat"];
+    $belegt= $_POST["belegt"]; if(isset($_POST["belegt"])){ $_POST["belegt"]==1;}else{$_POST["belegt"] == 0;}  ;
+    $gepatcht= $_POST["gepatcht"]; if(isset($_POST["gepatcht"])){$_POST["gepatcht"] == 1;}else{$_POST["gepatcht"]== 0;};
     
   
-      $update= "UPDATE patchfelder_tbl SET raum_nutzer='$raum', vlan='$vlan',geraete_ip='$gerat',port='$port' WHERE patch_id=$id";
+      $update= "UPDATE patchfelder_tbl SET raum_nutzer='$raum', vlan='$vlan',geraete_ip='$gerat',port='$port', belegt=' $belegt', gepatcht='$gepatcht' WHERE patch_id=$id";
       if (mysqli_query($conn, $update)) {
         echo "<h5 class='text-success m-5'>The record has been updated successfully! :)</h5>";
         echo "<input type= 'submit' name='back' value= 'Back'  onclick= 'location.href=\"patchplan.php\";' class='btn btn-outline-success m-5'>";
