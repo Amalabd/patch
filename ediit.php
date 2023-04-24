@@ -64,37 +64,37 @@ include_once("pf.php");
     <tr>
       <th scope="row">1</th>
       <td><label><h5 class="m-3">Raum-Nutzer :</h5> </label></td>
-      <td><input type="text" name ="raum" ></td>
+      <td><input type="text" name ="raum" value= "<?php echo htmlspecialchars($raum); ?>" ></td>
 
     </tr>
     <tr>
       <th scope="row">2</th>
       <td><label><h5 class="m-3">VLAN :</h5> </label></td>
-      <td><input type="text" name ="vlan" ></td>
+      <td><input type="text" name ="vlan" value= "<?php echo htmlspecialchars($vlan); ?>"></td>
 
     </tr>
     <tr>
       <th scope="row">3</th>
       <td ><label><h5 class="m-3">PORT :</h5> </label></td>
-      <td><input type="text" name ="port" ></td>
+      <td><input type="text" name ="port" value= "<?php echo htmlspecialchars($port); ?>" ></td>
 
     </tr>
     <tr>
       <th scope="row">4</th>
       <td ><label><h5 class="m-3">Gerät-IP :</h5> </label></td>
-      <td><input type="text" name ="gerat" ></td>
+      <td><input type="text" name ="gerat" value= "<?php echo htmlspecialchars($gerat); ?>"></td>
 
     </tr>
     <tr>
       <th scope="row">5</th>
       <td ><label><h5 class="m-3">Belegt:</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" name="belegt" value="0" id="defaultCheck1"><?php  ?></td>
+      <td><input class="form-check-input" type="checkbox" name="belegt" value= "<?php echo htmlspecialchars($belegt); ?>" id="defaultCheck1"><?php  ?></td>
 
     </tr>
     <tr>
       <th scope="row">6</th>
       <td ><label><h5 class="m-3">Gepatcht :</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" name="gepatcht" value="0" id="defaultCheck1"></td>
+      <td><input class="form-check-input" type="checkbox" name="gepatcht" value= "<?php echo htmlspecialchars($gepatcht); ?>" id="defaultCheck1"></td>
 
     </tr>
   </tbody>
@@ -105,6 +105,24 @@ include_once("pf.php");
   </div>
 
 <?php
+$id=$_GET["patch_id"];
+$sh = "SELECT * FROM patchfelder_tbl WHERE patch_id= $id";
+$show=mysqli_query($conn, $sh);
+
+if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
+    
+    
+    $row= mysqli_fetch_assoc($show);
+    $raum= $row["raum_nutzer"];
+    $vlan= $row["vlan"];
+    $port= $row["port"];
+    $gerat= $row["geraete_ip"];
+    $belegt= $row["belegt"];
+    $gepatcht=$row["gepatcht"];
+    
+        
+    
+}
 if(isset($_POST["up"])){
     $id=$_GET["patch_id"];
     $raum= $_POST["raum"];
