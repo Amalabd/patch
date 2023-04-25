@@ -18,9 +18,9 @@ if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
     $vlan= $row["vlan"];
     $port= $row["port"];
     $gerat= $row["geraete_ip"];
-    $belegt= $row["belegt"];
-    $gepatcht= ( ($row["gepatcht"] === 1) ? 'checked' : ""); 
-    if ($row["belegt"] == 1) echo "checked='checked'"; 
+    $belegt= $row["belegt"] ? "1" : "0";
+    $gepatcht= $row["gepatcht"] ? "1" : "0"; 
+    //$checked = $gepatcht == 1 ? 'checked' : ''; 
 }
 
 ?>
