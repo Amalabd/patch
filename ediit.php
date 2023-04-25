@@ -6,6 +6,23 @@ ini_set('session.cookie_httponly', true);
 session_start();
 include_once("pf.php");
 
+$id=$_GET["patch_id"];
+$sh = "SELECT * FROM patchfelder_tbl WHERE patch_id= $id";
+$show=mysqli_query($conn, $sh);
+
+if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
+    
+    
+    $row= mysqli_fetch_assoc($show);
+    $raum= $row["raum_nutzer"];
+    $vlan= $row["vlan"];
+    $port= $row["port"];
+    $gerat= $row["geraete_ip"];
+    $belegt= $row["belegt"];
+    $gepatcht= ( ($row["gepatcht"] === 1) ? 'checked' : ""); 
+    if ($row["belegt"] == 1) echo "checked='checked'"; 
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -105,24 +122,7 @@ include_once("pf.php");
   </div>
 
 <?php
-$id=$_GET["patch_id"];
-$sh = "SELECT * FROM patchfelder_tbl WHERE patch_id= $id";
-$show=mysqli_query($conn, $sh);
 
-if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
-    
-    
-    $row= mysqli_fetch_assoc($show);
-    $raum= $row["raum_nutzer"];
-    $vlan= $row["vlan"];
-    $port= $row["port"];
-    $gerat= $row["geraete_ip"];
-    $belegt= $row["belegt"];
-    $gepatcht=$row["gepatcht"];
-    
-        
-    
-}
 if(isset($_POST["up"])){
     $id=$_GET["patch_id"];
     $raum= $_POST["raum"];
