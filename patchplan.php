@@ -2,11 +2,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 ini_set('session.cookie_httponly', true);
-
-session_start();
 include_once("pf.php");
+if(session_start()){
+
+
 $user= $_SESSION['mail'];
-$class = $_SESSION ['class'];
+$clas =mysqli_query($conn, "SELECT class FROM users WHERE email= $user") ;}
 /*
 if(!empty(filter_input (INPUT_POST, "mail")))
 {
@@ -48,7 +49,7 @@ if(empty($_SESSION['mail'])){
     <a class="navbar-brand text-white fw-bold">Patch-Plan</a>
     <span class=" collapse navbar-collapse text-white fw-bold"> Welcome to our offecial website</span>
     <div class="d-flex text-white">
-      <a class="nav-link active text-white fw-bold " > <?php echo $user; ?>  </a>
+      <a class="nav-link active text-white fw-bold " > <?php echo $user . $clas; ?>  </a>
     <a class="nav-link active text-white fw-bold "  aria-current="page" href= 'log.php?session_unset()' role='button' aria-pressed='true'>Log-out</a>
 
 </div>
@@ -82,12 +83,12 @@ if(empty($_SESSION['mail'])){
     </tr>
    
   </table>
-
+<?php var_dump( $clas); ?>
   </section>
 
 
         <?php
-
+ 
 $qry= mysqli_query($conn, "SELECT  DISTINCT(koordinate_2)FROM patchfelder_tbl");
 $qry2= mysqli_query($conn, "SELECT * FROM patchfelder_tbl ORDER BY patch_id");
 
@@ -96,7 +97,7 @@ $qry2= mysqli_query($conn, "SELECT * FROM patchfelder_tbl ORDER BY patch_id");
 $res= mysqli_fetch_all($qry2, MYSQLI_ASSOC);
 
      echo "<table class='table table-bordered table-striped'>";
-
+     
        // Adding the first row for the horizontal headings
        echo "<tr style= 'background-color:#7A003F; color:white;'>";
        echo "<th></th>";
@@ -129,20 +130,18 @@ if($cells === 25){
     
   }
 
-  
+ 
  
 $id =$rr ['patch_id'];
-
-echo "<td> <a href= 'ediit.php?patch_id=".$id."' role='button' aria-pressed='true' style='text-decoration:none; color:black;'>";
-
-              
-     
-
-          $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,geraete_ip,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id = ? ");
+$stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,geraete_ip,port, belegt, gepatcht FROM patchfelder_tbl WHERE patch_id = ? ");
           mysqli_stmt_bind_param($stmt, "i", $id);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$geraete_ip,$port,$belegt,$gepatcht);
-          
+
+ if($class = 'a'){         
+
+echo "<td> <a href= 'ediit.php?patch_id=".$id."' role='button' aria-pressed='true' style='text-decoration:none; color:black;'>";}else{echo "<td>";}
+  
           while( mysqli_stmt_fetch($stmt)){
            
             echo ""   ;  
@@ -155,7 +154,7 @@ echo  "<br> <span class='text-primary'></span> ". "1: ". htmlspecialchars($raum_
  "<br>"."6 : " .(($gepatcht  == 0) ? '<span class="text-danger"><i class="fa fa-circle" aria-hidden="true"></i>
  </span>' : '<span class="text-success"><i class="fa fa-circle" aria-hidden="true"></i>
  </span>'). "<br>"."<br>";
- echo  "";
+
 }
 
           echo "</a></td>";
