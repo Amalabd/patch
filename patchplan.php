@@ -3,21 +3,20 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 ini_set('session.cookie_httponly', true);
 include_once("pf.php");
-if(session_start()){
+session_start();
+
 
 
 $user= $_SESSION['mail'];
 $clas =mysqli_query($conn, "SELECT class FROM users WHERE email= '$user' ") ;
 $clas_data = mysqli_fetch_assoc($clas);
-$classs= $clas_data['class'];}
+$classs= $clas_data['class'];
 $_SESSION['timestamp']= time();
-if(time() - $_SESSION['timestamp'] > 40) { //subtract new timestamp from the old one
+if(time() - $_SESSION['timestamp'] > 40) { 
   echo"<script>alert('15 Minutes over!');</script>";
-  session_unset();
-  header("Location: log.php"); //redirect to index.php
+  session_unset();session_destroy();
+  header("Location: log.php"); 
   exit;
-} else {
-  $_SESSION['timestamp'] = time(); //set new timestamp
 }
 
 if(empty($_SESSION['mail'])){
