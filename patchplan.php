@@ -7,13 +7,19 @@ if(session_start()){
 
 
 $user= $_SESSION['mail'];
-$clas =mysqli_query($conn, "SELECT class FROM users WHERE email= $user") ;}
-/*
-if(!empty(filter_input (INPUT_POST, "mail")))
-{
- $_SESSION['mail'] = filter_input (INPUT_POST, "mail");
-} 
-*/
+$clas =mysqli_query($conn, "SELECT class FROM users WHERE email= '$user' ") ;
+$clas_data = mysqli_fetch_assoc($clas);
+$classs= $clas_data['class'];}
+$_SESSION['timestamp']= time();
+if(time() - $_SESSION['timestamp'] > 40) { //subtract new timestamp from the old one
+  echo"<script>alert('15 Minutes over!');</script>";
+  session_unset();
+  header("Location: log.php"); //redirect to index.php
+  exit;
+} else {
+  $_SESSION['timestamp'] = time(); //set new timestamp
+}
+
 if(empty($_SESSION['mail'])){
   header("Location: log.php");
 }
@@ -49,7 +55,7 @@ if(empty($_SESSION['mail'])){
     <a class="navbar-brand text-white fw-bold">Patch-Plan</a>
     <span class=" collapse navbar-collapse text-white fw-bold"> Welcome to our offecial website</span>
     <div class="d-flex text-white">
-      <a class="nav-link active text-white fw-bold " > <?php echo $user . $clas; ?>  </a>
+      <a class="nav-link active text-white fw-bold " > <?php echo $user; ?>  </a>
     <a class="nav-link active text-white fw-bold "  aria-current="page" href= 'log.php?session_unset()' role='button' aria-pressed='true'>Log-out</a>
 
 </div>
@@ -83,7 +89,7 @@ if(empty($_SESSION['mail'])){
     </tr>
    
   </table>
-<?php var_dump( $clas); ?>
+
   </section>
 
 
@@ -138,7 +144,7 @@ $stmt=mysqli_prepare($conn, "SELECT raum_nutzer ,vlan,geraete_ip,port, belegt, g
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$raum_nutzer,$vlan,$geraete_ip,$port,$belegt,$gepatcht);
 
- if($class = 'a'){         
+ if($classs === 'a'){         
 
 echo "<td> <a href= 'ediit.php?patch_id=".$id."' role='button' aria-pressed='true' style='text-decoration:none; color:black;'>";}else{echo "<td>";}
   
