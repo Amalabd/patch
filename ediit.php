@@ -5,6 +5,10 @@ ini_set('session.cookie_httponly', true);
 
 session_start();
 include_once("pf.php");
+$user= $_SESSION['mail'];
+$clas =mysqli_query($conn, "SELECT class FROM users WHERE email= '$user' ") ;
+$clas_data = mysqli_fetch_assoc($clas);
+$classs= $clas_data['class'];
 
 $id=$_GET["patch_id"];
 $sh = "SELECT * FROM patchfelder_tbl WHERE patch_id= $id";
@@ -46,19 +50,15 @@ if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
     </a>
   </div>
 </nav>
-<nav class="navbar navbar-expand-lg " style= "background-color:black;">
+<nav class="navbar navbar-expand-lg" style= "background-color:black; ">
   <div class="container-fluid">
-    <a class="navbar-brand text-white fw-bold" href="#">Patch-Plan</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active text-white fw-bold" aria-current="page" href="#">Log-in</a>
-        <a class="nav-link text-white fw-bold" href="#">Plan</a>
-      </div>
-    </div>
+    <a class="navbar-brand text-white fw-bold">Patch-Plan</a>
+    <span class=" collapse navbar-collapse text-white fw-bold"> Welcome to our offecial website</span>
+    <div class="d-flex text-white">
+      <a class="nav-link active text-white fw-bold " > <?php echo $user; ?>  </a>
+    <a class="nav-link active text-white fw-bold "  aria-current="page" href= 'log.php?session_unset()' role='button' aria-pressed='true'>Log-out</a>
+
+</div>
   </div>
 </nav>
 
@@ -105,13 +105,13 @@ if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
     <tr>
       <th scope="row">5</th>
       <td ><label><h5 class="m-3">Belegt:</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" name="belegt" value= "<?php echo htmlspecialchars($belegt); ?>" id="defaultCheck1"><?php  ?></td>
+      <td><input class="form-check-input" type="checkbox" name="belegt" value= "<?php echo htmlspecialchars($belegt); ?>" id="defaultCheck1" <?php echo $belegt == "1" ? 'checked' : '' ; ?>></td>
 
     </tr>
     <tr>
       <th scope="row">6</th>
       <td ><label><h5 class="m-3">Gepatcht :</h5> </label></td>
-      <td><input class="form-check-input" type="checkbox" name="gepatcht" value= "<?php echo htmlspecialchars($gepatcht); ?>" id="defaultCheck1"></td>
+      <td><input class="form-check-input" type="checkbox" name="gepatcht" value= "<?php echo htmlspecialchars($gepatcht); ?>" id="defaultCheck1" <?php echo $gepatcht == "1" ? 'checked' : '' ; ?>></td>
 
     </tr>
   </tbody>
