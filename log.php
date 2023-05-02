@@ -50,7 +50,7 @@ include_once("pf.php");
     <input type="text"  name="mail" placeholder= "Schreib hier"><br><br>
     <label class= "fs-4" for="pass">Password</label><br>
     <input type="password"  name="pass" placeholder= "****************"><br><br>
-    <input type="hidden"  name="class" ><br><br>
+    <input type="hidden"  name="clas" ><br><br>
     <input type="submit" value="Submit" name= "btn" class= "fs-5 p-1 m-3">
   </form> 
   <a href="mailto: amal.abdalla@ovgu.de" style="text-decoration:none; color:white;">
@@ -78,7 +78,7 @@ $message = '<div class="alert alert-secondary alert-dismissible fade show  col-3
   {
     $mail = secure($_POST['mail']);
     $pass = secure($_POST['pass']);
-    $class = secure($_POST['class']);
+    $clas = secure($_POST['clas']);
     $stmt= mysqli_prepare($conn, "SELECT * FROM users WHERE email= ? AND password= ? ");
     mysqli_stmt_bind_param($stmt, "ss", $mail, $pass);
     mysqli_stmt_execute($stmt);
@@ -89,7 +89,7 @@ $message = '<div class="alert alert-secondary alert-dismissible fade show  col-3
     session_start();
     $_SESSION ['mail']= $mail;
     $_SESSION ['pass']= $pass;
-    $_SESSION ['class']= $class;
+    $_SESSION ['clas']= $clas;
     header("Location: patchplan.php");
     exit();
     }else {
