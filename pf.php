@@ -28,10 +28,10 @@ function close_db(){
 }
 
 
-
+/*
 if (empty($_SESSION['tan']))
 {
   $_SESSION['tan']=0;
 }
-
+*/
 ?>
