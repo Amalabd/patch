@@ -4,7 +4,7 @@ ini_set('display_errors',1);
 ini_set('session.cookie_httponly', true);
 include_once("pf.php");
 session_start();
-
+//if(empty($_SESSION['mail'])){ header("Location: log.php");exit;}
 
 
 $user= $_SESSION['mail'];
@@ -13,7 +13,7 @@ $clas_data = mysqli_fetch_assoc($clas);
 $classs= $clas_data['class'];
 $_SESSION['timestamp']= time();
 if(time() - $_SESSION['timestamp'] > 40) { 
-  echo"<script>alert('15 Minutes over!');</script>";
+  echo"<script>alert('Will log out!');</script>";
   session_unset();session_destroy();
   header("Location: log.php"); 
   exit;
