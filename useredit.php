@@ -86,7 +86,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users WHERE i
           mysqli_stmt_bind_param($stmt, "i", $idd);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
-          $row=mysqli_stmt_fetch($stmt);
+          //$stmt=mysqli_stmt_fetch($stmt);
          echo '<div class="container m-5">';
           
           echo'<div class="m-3">';
@@ -103,17 +103,17 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users WHERE i
             echo'<tbody>';
 
           while( mysqli_stmt_fetch($stmt)){
-            $idd= $row["id"];
-            $email= $row["email"];
-            $password= $row["password"];
-            $class= $row["class"];
+            $idd= $stmt["id"];
+            $email= $stmt["email"];
+            $password= $stmt["password"];
+            $class= $stmt["class"];
 
 
             echo "<tr>";
-            echo "<td>" . "<input type='text' name ='id'>" .htmlspecialchars($idd). "</td>".
-             "<td>"  ."<input type='text' name ='email'>" .htmlspecialchars($email). "</td>" .
-              "<td>". "<input type='text' name ='pass'>" .htmlspecialchars($password). "</td>" .
-               "<td>". "<input type='text' name ='class'>" .htmlspecialchars($class). "</td>";
+            echo "<td>" . "<input type='text' name ='id' value= ' " .htmlspecialchars($idd). " '>" . "</td>".
+             "<td>"  ."<input type='text' name ='email' value= ' " .htmlspecialchars($email). " '>" . "</td>".
+              "<td>". "<input type='text' name ='pass'  value= ' " .htmlspecialchars($password). " '>" . "</td>".
+               "<td>". "<input type='text' name ='class'  value= ' " .htmlspecialchars($class). " '>" . "</td>" ;
             echo "</tr>";
 
           }
