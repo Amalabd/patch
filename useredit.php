@@ -75,7 +75,7 @@ $classs= $clas_data['class'];
 
 <?php
 function secure($data){
-    $data= htmlentities($data);
+   $data= htmlentities($data);
     $data= htmlspecialchars($data);
     $data = trim($data);
     $data = stripcslashes($data);
@@ -87,7 +87,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
           //$stmt=mysqli_stmt_fetch($stmt);
-         echo '<div class="container m-5">';
+         echo '<div class="container mt-5">';
           echo'<div class="m-3">';
           echo'<form action=" " method="post">';
           echo "<table class='table table-bordered table-striped'>";
@@ -116,26 +116,28 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
                 '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>";
 
-                if(isset($_POST["up"])){
-                    $idds=secure($_POST["id"]);
-                    $emails= secure($_POST["email"]);
-                    $classs= secure($_POST["class"]);
-                    $count = count($idds);
+               
+            echo "</tr>";
 
-                    for($i = 0 ; $i< $count ; $i++){
-                        $idd= secure($idds[$i]);
-                        $email=secure($emails[$i]);
-                        $class=secure($classs[$i]);
+        }
+
+                if(isset($_POST["up"]) && mysqli_stmt_affected_rows($stmt) > 0 ){
+                    $idd=secure($_POST["id[]"]);
+                    $email= secure($_POST["email[]"]);
+                    $class= secure($_POST["class[]"]);
+                    //$count = count($idds);
+
+                    
 
                         $stmt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
-                        mysqli_stmt_bind_param($stmt,"ssi", $emails[$i], $classs[$i], $ids[$i] );
+                        mysqli_stmt_bind_param($stmt,"ssi", $email, $class, $idd);
                         mysqli_stmt_execute($stmt);
 
-                        if (mysqli_query($conn, $update)) {
+                        if (mysqli_stmt_affected_rows($stmt) > 0) {
                             echo '<h5 class="text-success m-5"><i class="fa fa-check" aria-hidden="true"></i></h5>';
                          }
 
-                    }
+                    
                 
                   
                      
@@ -145,9 +147,6 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
 
 
-            echo "</tr>";
-
-          }
 
         echo'</tbody>';
         echo '</table>';
