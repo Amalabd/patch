@@ -112,9 +112,25 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
             echo "<td>" . "<input type='text' name ='id[]' value= ' " .htmlspecialchars($idd). " ' readonly>" . "</td>".
              "<td>"  ."<input type='text' name ='email[]' value= ' " .htmlspecialchars($email). " '>" . "</td>".
               "<td>". "<input type='text' name ='pass[]'  value= ' " .htmlspecialchars($password). " '>" . "</td>".
-               "<td>". "<input type='text' name ='class[]'  value= ' " .htmlspecialchars($class). " '>" . "</td>" ;
-               "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'.
-                '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>" ;
+               "<td>". "<input type='text' name ='class[]'  value= ' " .htmlspecialchars($class). " '>" . "</td>" .
+               "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
+                '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>";
+
+                if(isset($_POST["up"])){
+                    $idd=$_GET["id"];
+                    $email= $_POST["email"];
+                    $class= $_POST["class"];
+                
+                      $update= "UPDATE users SET email ='$email', class='$class' WHERE patch_id=$idd";
+                      if (mysqli_query($conn, $update)) {
+                        echo '<h5 class="text-success m-5"><i class="fa fa-check" aria-hidden="true"></i></h5>';
+                     }
+                    }
+                
+
+
+
+
             echo "</tr>";
 
           }
