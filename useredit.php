@@ -121,7 +121,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                     $email= $_POST["email"];
                     $class= $_POST["class"];
                 
-                      $update= "UPDATE users SET email ='$email', class='$class' WHERE patch_id=$idd";
+                      $update= "UPDATE users SET email ='$email', class='$class' WHERE id=$idd";
                       if (mysqli_query($conn, $update)) {
                         echo '<h5 class="text-success m-5"><i class="fa fa-check" aria-hidden="true"></i></h5>';
                      }
