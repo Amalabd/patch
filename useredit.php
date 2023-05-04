@@ -121,10 +121,12 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
         }
 
-                if(isset($_POST["up"]) && mysqli_stmt_affected_rows($stmt) > 0 ){
-                    $idd=secure($_POST["id[]"]);
-                    $email= secure($_POST["email[]"]);
-                    $class= secure($_POST["class[]"]);
+                if(isset($_POST["up"]) && mysqli_stmt_affected_rows($stmt) > 0){
+
+                    for($i=0; $i < count($_POST['id']) ; $i++){
+                    $idd=secure($_POST["id"][$i]);
+                    $email= secure($_POST["email"][$i]);
+                    $class= secure($_POST["class"][$i]);
                     //$count = count($idds);
 
                     
@@ -138,7 +140,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                          }
 
                     
-                
+                        }
                   
                      
                     }
