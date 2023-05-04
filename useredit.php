@@ -113,7 +113,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
               "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
-                '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>";
+                '<input type= "button" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>";
 
                
             echo "</tr>";
