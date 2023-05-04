@@ -104,10 +104,12 @@ function secure($data){
   
      
     }
-    if(isset($_POST["del"])){
+    if(isset($_POST["del"]) && isset($_POST["del_id"]) ){
+$del_ids = $_POST["del_id"];
+foreach($del_ids as $del_id){
+    $idd = secure($del_id);
 
-        for($i=0; $i < count($_POST['id']) ; $i++){
-            $idd=secure($_POST["id"][$i]);
+        
         
 
             $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
@@ -156,6 +158,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
               "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
+               '<input type= "hidden" value=  " ' .secure($idd). ' "  name= "del_id[]">' .
                 '<input type= "button" value= "Delete" name= "del[' . $idd . ']" class="btn btn-outline-danger">' . "</td>";
 
                
