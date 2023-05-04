@@ -109,22 +109,36 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
 
             echo "<tr>";
-            echo "<td>" . "<input type='text' name ='id[]' value= ' " .htmlspecialchars($idd). " ' readonly>" . "</td>".
-             "<td>"  ."<input type='text' name ='email[]' value= ' " .htmlspecialchars($email). " '>" . "</td>".
-              "<td>". "<input type='text' name ='pass[]'  value= ' " .htmlspecialchars($password). " '>" . "</td>".
-               "<td>". "<input type='text' name ='class[]'  value= ' " .htmlspecialchars($class). " '>" . "</td>" .
+            echo "<td>" . "<input type='text' name ='id[]' value= ' " .secure($idd). " ' readonly>" . "</td>".
+             "<td>"  ."<input type='text' name ='email[]' value= ' " .secure($email). " '>" . "</td>".
+              "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
+               "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
                 '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>";
 
                 if(isset($_POST["up"])){
-                    $idd=$_GET["id"];
-                    $email= $_POST["email"];
-                    $class= $_POST["class"];
+                    $idds=secure($_POST["id"]);
+                    $emails= secure($_POST["email"]);
+                    $classs= secure($_POST["class"]);
+                    $count = count($idds);
+
+                    for($i = 0 ; $i< $count ; $i++){
+                        $idd= secure($idds[$i]);
+                        $email=secure($emails[$i]);
+                        $class=secure($classs[$i]);
+
+                        $stmt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
+                        mysqli_stmt_bind_param($stmt,"ssi", $emails[$i], $classs[$i], $ids[$i] );
+                        mysqli_stmt_execute($stmt);
+
+                        if (mysqli_query($conn, $update)) {
+                            echo '<h5 class="text-success m-5"><i class="fa fa-check" aria-hidden="true"></i></h5>';
+                         }
+
+                    }
                 
-                      $update= "UPDATE users SET email ='$email', class='$class' WHERE id=$idd";
-                      if (mysqli_query($conn, $update)) {
-                        echo '<h5 class="text-success m-5"><i class="fa fa-check" aria-hidden="true"></i></h5>';
-                     }
+                  
+                     
                     }
                 
 
