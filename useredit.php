@@ -75,7 +75,6 @@ $classs= $clas_data['class'];
 
 <?php
 function secure($data){
-   $data= htmlentities($data);
     $data= htmlspecialchars($data);
     $data = trim($data);
     $data = stripcslashes($data);
@@ -121,7 +120,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
         }
 
-                if(isset($_POST["up"]) && mysqli_stmt_affected_rows($stmt) > 0){
+                if(isset($_POST["up"])){
 
                     for($i=0; $i < count($_POST['id']) ; $i++){
                     $idd=secure($_POST["id"][$i]);
@@ -131,12 +130,12 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
                     
 
-                        $stmt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
-                        mysqli_stmt_bind_param($stmt,"ssi", $email, $class, $idd);
-                        mysqli_stmt_execute($stmt);
+                        $stmtt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
+                        mysqli_stmt_bind_param($stmtt,"ssi", $email, $class, $idd);
+                        mysqli_stmt_execute($stmtt);
 
-                        if (mysqli_stmt_affected_rows($stmt) > 0) {
-                            echo '<h5 class="text-success m-5"><i class="fa fa-check" aria-hidden="true"></i></h5>';
+                        if (mysqli_stmt_affected_rows($stmtt) > 0) {
+                            header("refresh:.1; url=useredit.php" );
                          }
 
                     
@@ -144,6 +143,29 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                   
                      
                     }
+                    if(isset($_POST["del"])){
+
+                        for($i=0; $i < count($_POST['id']) ; $i++){
+                        $idd=secure($_POST["id"][$i]);
+                        $email= secure($_POST["email"][$i]);
+                        $class= secure($_POST["class"][$i]);
+                        //$count = count($idds);
+    
+                        
+    
+                            $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
+                            mysqli_stmt_bind_param($stmtd,"i",$idd);
+                            mysqli_stmt_execute($stmtd);
+    
+                            if (mysqli_stmt_affected_rows($stmtd) > 0) {
+                                header("refresh:.1; url=useredit.php" );
+                             }
+    
+                        
+                            }
+                      
+                         
+                        }
                 
 
 
