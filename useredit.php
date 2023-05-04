@@ -82,45 +82,46 @@ function secure($data){
     return $data;
   }
 
-$stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users WHERE id = ? ");
-          mysqli_stmt_bind_param($stmt, "i", $idd);
+$stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
+          //mysqli_stmt_bind_param($stmt, "i", $idd);
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
           //$stmt=mysqli_stmt_fetch($stmt);
          echo '<div class="container m-5">';
-          
           echo'<div class="m-3">';
           echo'<form action=" " method="post">';
           echo "<table class='table table-bordered table-striped'>";
      
             // Adding the first row for the horizontal headings
+            echo "<thead>";
             echo "<tr style= 'background-color:#7A003F; color:white;'>";
             echo "<th scope='col'>ID</th>";
             echo "<th scope='col'>EMAIL</th>";
             echo "<th scope='col'>PASSWORD</th>";
             echo "<th scope='col'>CLASS</th>";
-            echo "<tr>";
+            echo "<th scope='col'>Action</th>";
+            echo "</tr>";
+            echo"</thead>";
             echo'<tbody>';
 
           while( mysqli_stmt_fetch($stmt)){
-            $idd= $stmt["id"];
-            $email= $stmt["email"];
-            $password= $stmt["password"];
-            $class= $stmt["class"];
+            
 
 
             echo "<tr>";
-            echo "<td>" . "<input type='text' name ='id' value= ' " .htmlspecialchars($idd). " '>" . "</td>".
-             "<td>"  ."<input type='text' name ='email' value= ' " .htmlspecialchars($email). " '>" . "</td>".
-              "<td>". "<input type='text' name ='pass'  value= ' " .htmlspecialchars($password). " '>" . "</td>".
-               "<td>". "<input type='text' name ='class'  value= ' " .htmlspecialchars($class). " '>" . "</td>" ;
+            echo "<td>" . "<input type='text' name ='id[]' value= ' " .htmlspecialchars($idd). " ' readonly>" . "</td>".
+             "<td>"  ."<input type='text' name ='email[]' value= ' " .htmlspecialchars($email). " '>" . "</td>".
+              "<td>". "<input type='text' name ='pass[]'  value= ' " .htmlspecialchars($password). " '>" . "</td>".
+               "<td>". "<input type='text' name ='class[]'  value= ' " .htmlspecialchars($class). " '>" . "</td>" ;
+               "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'.
+                '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger">' . "</td>" ;
             echo "</tr>";
 
           }
 
         echo'</tbody>';
         echo '</table>';
-        echo' <input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">';
+        
         echo'</form>';
         echo' </div>';
         echo'</div>';
