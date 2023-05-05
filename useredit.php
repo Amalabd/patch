@@ -138,19 +138,19 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
               
-                '<input type= "submit" value= "Delete" name= "del_<?php echo $idd; ?>"   
-                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" />' . "</td>";
+                '<input type= "submit" value= "Delete" name= "del' . $idd .'"   
+                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' . "</td>";
 
                
             echo "</tr>";
 
         }
 
-        if(isset($_POST["del"])){
+        if(isset($_POST["del".$idd])){
 
           $ids = $_POST['id'];
           foreach($ids as $id){
-            if(isset($_POST['del_'.$id])){
+            if(isset($_POST['del'.$id])){
               $id= secure($id);
               $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
               mysqli_stmt_bind_param($stmtd,"i",$id);
