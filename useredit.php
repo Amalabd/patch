@@ -139,16 +139,16 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
               
                 '<input type= "submit" value= "Delete" name= "del"   
-                class="btn btn-outline-danger" onclick="return confirm(Are you sure?);" />' . "</td>";
+                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" />' . "</td>";
 
                
             echo "</tr>";
 
         }
 
-        if(isset($_POST["del"]) && mysqli_stmt_fetch($stmt)){
+        if(isset($_POST["del"])){
 
-          $ids = $_POST['id'][0];
+          $ids = secure($_POST['id'][0]);
 
                 $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
                 mysqli_stmt_bind_param($stmtd,"i",$ids);
