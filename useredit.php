@@ -96,12 +96,12 @@ function secure($data){
         mysqli_stmt_execute($stmtt);
 
         if (mysqli_stmt_affected_rows($stmtt)) {
-            header("refresh:.1; url=useredit.php" );
+          $refresh_url= "useredit.php";
          }
 
     
         }
-  
+        header("refresh:.1; url=useredit.php" );
      
     }
     if(isset($_POST["del"]) ){
@@ -114,12 +114,12 @@ foreach($del_ids as $del_id){
             mysqli_stmt_execute($stmtd);
 
             if (mysqli_stmt_affected_rows($stmtd)) {
-                header("refresh:.1; url=useredit.php" );
+               $refresh_url= "useredit.php";
              }
 
         
             }
-      
+            header("refresh:.1; url=useredit.php" );
          
         }
 
@@ -155,8 +155,8 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
               "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
-               '<input type= "hidden" value=  " ' .secure($idd). ' "  name= "del[]">' .
-                '<input type= "submit" value= "Delete" name= "del_button[]"  class="btn btn-outline-danger">' . "</td>";
+              
+                '<input type= "button" value= "Delete" name= "del[' .secure($idd). ']"  class="btn btn-outline-danger">' . "</td>";
 
                
             echo "</tr>";
