@@ -139,33 +139,28 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
               
                 '<input type= "submit" value= "Delete" name= "del[]"   
-                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' . "</td>";
+                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' . "</td>" . 
+              "<input type='hidden' name='record_id[]' value='" . $idd . "'>" ."</td>";
 
                
             echo "</tr>";
 
           }
 
-        if(isset($_POST["del"]) && in_array($idd, $_POST["id"])){
+       if(isset($_POST["del"])) {
+  $record_ids = $_POST["record_id"];
+  foreach ($record_ids as $record_id) {
+    if (in_array($record_id, $_POST["id"])) {
+      $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
+      mysqli_stmt_bind_param($stmtd,"i",$record_id);
+      mysqli_stmt_execute($stmtd);
 
-          
-         
-             
-              $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
-              mysqli_stmt_bind_param($stmtd,"i",$idd);
-              mysqli_stmt_execute($stmtd);
-
-              if (mysqli_stmt_affected_rows($stmtd)) {
-                $refresh_url= "useredit.php?action=delete";
-               }
-             
-           
-
-               
-    
-          }
-        
-
+      if (mysqli_stmt_affected_rows($stmtd)) {
+        $refresh_url= "useredit.php?action=delete";
+      }
+    }
+  }
+}
 
 
 
