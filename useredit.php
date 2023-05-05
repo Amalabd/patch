@@ -144,7 +144,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                
             echo "</tr>";
 
-        }
+          }
 
         if(isset($_POST["del"]) && in_array($idd, $_POST["id"])){
 
