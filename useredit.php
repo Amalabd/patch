@@ -104,7 +104,7 @@ function secure($data){
        // header("refresh:.1; url=useredit.php" );
      
     }
-    if(isset($_POST["del"])) {
+    if(isset($_POST["del"]) && is_array($_POST["del"]) && !empty($_POST["del"])) {
       $record_ids = $_POST["record_id"];
       foreach ($record_ids as $record_id) {
         if (in_array($record_id, $_POST["id"])) {
@@ -153,7 +153,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
               
                 '<input type= "submit" value= "Delete" name= "del[]"   
-                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' . "</td>" . 
+                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' .  
               "<input type='hidden' name='record_id[]' value='" . $idd . "'>" ."</td>";
 
                
