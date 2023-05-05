@@ -75,79 +75,29 @@ $classs= $clas_data['class'];
 
 <?php
 function secure($data){
-    $data= htmlspecialchars($data);
-    $data = trim($data);
-    $data = stripcslashes($data);
-    return $data;
-  }
+  $data= htmlspecialchars($data);
+  $data = trim($data);
+  $data = stripcslashes($data);
+  return $data;
+}
 
-  if(isset($_POST["up"])){
-
-    for($i=0; $i < count($_POST['id']) ; $i++){
+if(isset($_POST["up"])){
+  for($i=0; $i < count($_POST['id']) ; $i++){
     $idd=secure($_POST["id"][$i]);
     $email= secure($_POST["email"][$i]);
     $class= secure($_POST["class"][$i]);
-    //$count = count($idds);
 
-    
+    $stmtt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
+    mysqli_stmt_bind_param($stmtt,"ssi", $email, $class, $idd);
+    mysqli_stmt_execute($stmtt);
 
-        $stmtt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
-        mysqli_stmt_bind_param($stmtt,"ssi", $email, $class, $idd);
-        mysqli_stmt_execute($stmtt);
-
-        if (mysqli_stmt_affected_rows($stmtt)) {
-          $refresh_url= "useredit.php?action=update";
-         }
-
-         
-        }
-       // header("refresh:.1; url=useredit.php" );
-     
+    if (mysqli_stmt_affected_rows($stmtt)) {
+      $refresh_url= "useredit.php?action=update";
     }
-    
-$stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
-          //mysqli_stmt_bind_param($stmt, "i", $idd);
-          mysqli_stmt_execute($stmt);
-          mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
-          //$stmt=mysqli_stmt_fetch($stmt);
-         echo '<div class="container mt-5">';
-          echo'<div class="m-3">';
-          echo'<form action=" " method="post">';
-          echo "<table class='table table-bordered table-striped'>";
-     
-            // Adding the first row for the horizontal headings
-            echo "<thead>";
-            echo "<tr style= 'background-color:#7A003F; color:white;'>";
-            echo "<th scope='col'>ID</th>";
-            echo "<th scope='col'>EMAIL</th>";
-            echo "<th scope='col'>PASSWORD</th>";
-            echo "<th scope='col'>CLASS</th>";
-            echo "<th scope='col'>Action</th>";
-            echo "</tr>";
-            echo"</thead>";
-            echo'<tbody>';
+  }
+}
 
-          while( mysqli_stmt_fetch($stmt)){
-            
-
-
-            echo "<tr>";
-            echo "<td>" . "<input type='text' name ='id[]' value= ' " .secure($idd). " ' readonly>" . "</td>".
-             "<td>"  ."<input type='text' name ='email[]' value= ' " .secure($email). " '>" . "</td>".
-              "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
-               "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
-               "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
-              
-                '<input type= "submit" value= "Delete" name= "del[]"   
-                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' . "</td>" . 
-              "<input type='hidden' name='record_id[]' value='" . $idd . "'>" ."</td>";
-
-               
-            echo "</tr>";
-
-        }
-
-       if(isset($_POST["del"])) {
+if(isset($_POST["del"])) {
   $record_ids = $_POST["record_id"];
   foreach ($record_ids as $record_id) {
     if (in_array($record_id, $_POST["id"])) {
@@ -162,6 +112,42 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
   }
 }
 
+$stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
+
+echo '<div class="container mt-5">';
+echo '<div class="m-3">';
+echo '<form action="" method="post">';
+echo '<table class="table table-bordered table-striped">';
+echo '<thead>';
+echo '<tr style="background-color:#7A003F; color:white;">';
+echo '<th scope="col">ID</th>';
+echo '<th scope="col">EMAIL</th>';
+echo '<th scope="col">PASSWORD</th>';
+echo '<th scope="col">CLASS</th>';
+echo '<th scope="col">Action</th>';
+echo '</tr>';
+echo '</thead>';
+echo '<tbody>';
+
+while(mysqli_stmt_fetch($stmt)){
+  echo '<tr>';
+  echo '<td><input type="text" name="id[]" value="'.secure($idd).'" readonly></td>';
+  echo '<td><input type="text" name="email[]" value="'.secure($email).'"></td>';
+  echo '<td><input type="text" name="pass[]" value="'.secure($password).'"></td>';
+  echo '<td><input type="text" name="class[]" value="'.secure($class).'"></td>';
+  echo '<td>';
+  echo '<input type="submit" value="Submit" name="up" class="btn btn-outline-success"> ';
+  echo '<input type="submit" value="Delete" name="del[]" class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');">';
+  echo "<input type='hidden' name='record_id[]' value='" . $idd . "'>" ."</td>";
+
+               
+            echo "</tr>";
+
+        }
+
+      
 
 
 
