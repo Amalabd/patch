@@ -99,29 +99,29 @@ function secure($data){
           $refresh_url= "useredit.php";
          }
 
-    
+         if(isset($_POST["del"]) ){
+          
+            $id=$idd[$i];
+          
+          
+          
+                      $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
+                      mysqli_stmt_bind_param($stmtd,"i",$id);
+                      mysqli_stmt_execute($stmtd);
+          
+                     
+          
+                      
+                      
+                     
+                   
+                  }     
         }
         header("refresh:.1; url=useredit.php" );
      
     }
-    if(isset($_POST["del"]) ){
-$ids = secure($_POST["del"][0]);
-
+   
     
-
-            $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
-            mysqli_stmt_bind_param($stmtd,"i",$ids);
-            mysqli_stmt_execute($stmtd);
-
-            if (mysqli_stmt_affected_rows($stmtd)) {
-               $refresh_url= "useredit.php";
-             }
-
-        
-            
-            header("refresh:.1; url=useredit.php" );
-         
-        }
 
 $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
           //mysqli_stmt_bind_param($stmt, "i", $idd);
@@ -156,7 +156,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
               
-                '<input type= "submit" value= "Delete" name= "del" value= "' .secure($idd). '"  class="btn btn-outline-danger">' . "</td>";
+                '<input type= "submit" value= "Delete" name= "del[]" value= "' .secure($idd). '"  class="btn btn-outline-danger">' . "</td>";
 
                
             echo "</tr>";
@@ -164,7 +164,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
         }
 
 
-                
+        
 
 
 
