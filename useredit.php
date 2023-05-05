@@ -105,12 +105,12 @@ function secure($data){
      
     }
     if(isset($_POST["del"]) ){
-$del_ids = $_POST["del"];
-foreach($del_ids as $del_id){
-    $idd = secure($del_id);
+$ids = secure($_POST["del"]);
+
+    
 
             $stmtd=mysqli_prepare($conn, "DELETE FROM users WHERE id=?");
-            mysqli_stmt_bind_param($stmtd,"i",$idd);
+            mysqli_stmt_bind_param($stmtd,"i",$ids);
             mysqli_stmt_execute($stmtd);
 
             if (mysqli_stmt_affected_rows($stmtd)) {
@@ -118,7 +118,7 @@ foreach($del_ids as $del_id){
              }
 
         
-            }
+            
             header("refresh:.1; url=useredit.php" );
          
         }
@@ -156,7 +156,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
               
-                '<input type= "button" value= "Delete" name= "del[' .secure($idd). ']"  class="btn btn-outline-danger">' . "</td>";
+                '<input type= "button" value= "Delete" name= "del" value= "' .secure($idd). '"  class="btn btn-outline-danger">' . "</td>";
 
                
             echo "</tr>";
