@@ -103,21 +103,11 @@ function secure($data){
 
      
     }
-
-  for($i=0; $i < count($_POST['id']) ; $i++){
-    $idd=secure($_POST["id"][$i]);
-    if(isset($_POST['del'])){
-
-  $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
-  mysqli_stmt_bind_param($stmtd, "i", $idd);
-  mysqli_stmt_execute($stmtd); 
-  if(mysqli_stmt_affected_rows($stmtd)){
-    $refresh_url="useredit.php?action=delete";
-  }
-}}
+   
 $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
+          $rows=  mysqli_stmt_fetch($stmt);
          echo '<div class="container mt-5">';
           echo'<div class="m-3">';
           echo'<form action=" " method="post">';
@@ -135,7 +125,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
             echo"</thead>";
             echo'<tbody>';
 
-          while( mysqli_stmt_fetch($stmt)){
+          while(mysqli_stmt_fetch($stmt)){
 
             echo "<tr>";
             echo "<td>" . "<input type='text' name ='id[]' value= ' " .secure($idd). " ' readonly>" . "</td>".
@@ -146,6 +136,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
               
                 '<input type= "submit" value= "Delete" name= "del"   
                 class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' .  
+                // "<input type='hidden' name='del' value='" . $idd . "'>" .
               "</td>";
 
                
@@ -153,8 +144,19 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
           }
 
-       
-// "<input type='hidden' name='record_id' value='" . $idd . "'>" .
+          if(isset($_POST['del'])){
+            if(is_array($rows)){
+            foreach($rows as $row){
+      $id=$row['id'];
+
+        $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
+        mysqli_stmt_bind_param($stmtd, "i", $id);
+        mysqli_stmt_execute($stmtd); 
+        if(mysqli_stmt_affected_rows($stmtd)){
+          $refresh_url="useredit.php?action=delete";
+        }
+      }}}
+
 
 
 
