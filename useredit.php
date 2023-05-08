@@ -104,10 +104,11 @@ function secure($data){
      
     }
    
+   
 $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
           mysqli_stmt_execute($stmt);
           mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
-          $rows=  mysqli_stmt_fetch($stmt);
+          //$rows=  mysqli_stmt_fetch($stmt);
          echo '<div class="container mt-5">';
           echo'<div class="m-3">';
           echo'<form action=" " method="post">';
@@ -144,18 +145,19 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
 
           }
 
-          if(isset($_POST['del'])){
-            if(is_array($rows)){
+          
+            $rows=  mysqli_stmt_fetch($stmt);
             foreach($rows as $row){
-      $id=$row['id'];
-
-        $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
-        mysqli_stmt_bind_param($stmtd, "i", $id);
-        mysqli_stmt_execute($stmtd); 
-        if(mysqli_stmt_affected_rows($stmtd)){
-          $refresh_url="useredit.php?action=delete";
-        }
-      }}}
+            $id=$row['id'];
+            if(isset($_POST['del'])){
+      
+           $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
+           mysqli_stmt_bind_param($stmtd, "i", $id);
+           mysqli_stmt_execute($stmtd); 
+           if(mysqli_stmt_affected_rows($stmtd)){
+             $refresh_url="useredit.php?action=delete";
+           }
+         }}
 
 
 
