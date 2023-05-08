@@ -103,10 +103,10 @@ function secure($data){
 
      
     }
-    if(isset($_POST['del']) && isset($_POST['ck'])){
+    if(isset($_POST['del'])){
       $ids= $_POST['ck'];
-      foreach($ids as $id => $value){
-$id = secure($id);
+      foreach($ids as $id){
+
       $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
            mysqli_stmt_bind_param($stmtd, "i", $id);
            mysqli_stmt_execute($stmtd); 
