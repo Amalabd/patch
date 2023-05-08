@@ -102,7 +102,14 @@ function secure($data){
         }
 
      
-    }
+    }elseif(isset($_POST['del']) && isset($_POST['ck'])===1){
+      $id= secure($_POST['ck']);
+      $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
+           mysqli_stmt_bind_param($stmtd, "i", $id);
+           mysqli_stmt_execute($stmtd); 
+           if(mysqli_stmt_affected_rows($stmtd)){
+             $refresh_url="useredit.php?action=delete";
+    }}
    
    
 $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
@@ -121,7 +128,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
             echo "<th scope='col'>EMAIL</th>";
             echo "<th scope='col'>PASSWORD</th>";
             echo "<th scope='col'>CLASS</th>";
-            echo "<th scope='col'>Action</th>";
+            echo "<th scope='col'>Sel</th>";
             echo "</tr>";
             echo"</thead>";
             echo'<tbody>';
@@ -133,33 +140,19 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
              "<td>"  ."<input type='text' name ='email[]' value= ' " .secure($email). " '>" . "</td>".
               "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
-               "<td>". '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">'. "  " .
+               "<td>". '<input class="form-check-input" type="checkbox" name="ck" value= " ' .secure($idd). ' " id="defaultCheck1">' .
               
-                '<input type= "submit" value= "Delete" name= "del"   
-                class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' .  
-                // "<input type='hidden' name='del' value='" . $idd . "'>" .
+             
               "</td>";
 
                
             echo "</tr>";
 
           }
-
+echo '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">' . 
+'<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' ;
           
-            $rows=  mysqli_stmt_fetch($stmt);
-            foreach($rows as $row){
-            $id=$row['id'];
-            if(isset($_POST['del'])){
-      
-           $stmtd=mysqli_prepare($conn,"DELETE FROM users WHERE id=?");
-           mysqli_stmt_bind_param($stmtd, "i", $id);
-           mysqli_stmt_execute($stmtd); 
-           if(mysqli_stmt_affected_rows($stmtd)){
-             $refresh_url="useredit.php?action=delete";
-           }
-         }}
-
-
+            
 
 
         echo'</tbody>';
