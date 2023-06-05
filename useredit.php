@@ -6,9 +6,24 @@ ini_set('session.cookie_httponly', true);
 session_start();
 include_once("pf.php");
 $user= $_SESSION['mail'];
-$clas =mysqli_query($conn, "SELECT class FROM users WHERE email= '$user' ") ;
+$clas =mysqli_query($conn, "SELECT * FROM users WHERE email= '$user' ") ;
 $clas_data = mysqli_fetch_assoc($clas);
 $classs= $clas_data['class'];
+$idd= $clas_data['id'];
+$pass= $clas_data['password'];
+
+$_SESSION['timestamp']= time();
+if(time() - $_SESSION['timestamp'] > 40) { 
+  echo"<script>alert('Will log out!');</script>";
+  session_unset();session_destroy();
+  header("Location: log.php"); 
+  exit;
+}
+
+if(empty($_SESSION['mail'])){
+  header("Location: log.php");
+}
+
 
 
 
@@ -42,7 +57,7 @@ $classs= $clas_data['class'];
 </nav>
 <nav class="navbar navbar-expand-lg" style= "background-color:black; ">
   <div class="container-fluid">
-    <a class="navbar-brand text-white fw-bold">Patch-Plan</a>
+    <a class="navbar-brand text-white fw-bold" href= 'patchplan.php'>Patch-Plan</a>
     <span class=" collapse navbar-collapse text-white fw-bold"> Welcome to our offecial website</span>
 
     <!----------Button ---->
@@ -56,8 +71,13 @@ $classs= $clas_data['class'];
 
   </button>
   <ul class="dropdown-menu dropdown-menu-dark">
-    <li><a class="dropdown-item" aria-current="page" href= 'useredit.php?session_unset()' role='button' aria-pressed='true'>Editing-Users</a></li>
-    <li><a class="dropdown-item" aria-current="page" href= 'useradd.php?session_unset()' role='button' aria-pressed='true'>Adding-Users</a></li>
+  <?php 
+    if($classs === 'a'){ 
+   echo '<li>' . '<a class="dropdown-item" aria-current="page" href= "useredit.php" role="button" aria-pressed="true">Editing-Users</a>'.'</li>'.
+    '<li>' .'<a class="dropdown-item" aria-current="page" href= "useradd.php" role="button" aria-pressed="true">Adding-Users</a>'.'</li>';
+    }
+    ?>
+    <li><a href= <?php echo'password.php?id= " '.$idd.' " ' ?> role='button' aria-pressed='true' class="dropdown-item" aria-current="page">Password-Change</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class=" dropdown-item nav-link  text-white fw-bold "  aria-current="page" href= 'log.php?session_unset()' role='button' aria-pressed='true'>Log-out</a></li>
   </ul>
@@ -77,7 +97,7 @@ $classs= $clas_data['class'];
 
 <?php
 function secure($data){
-    $data= htmlspecialchars($data);
+    //$data= htmlspecialchars($data);
     $data = trim($data);
     $data = stripcslashes($data);
     return $data;
@@ -88,14 +108,15 @@ function secure($data){
     for($i=0; $i < count($_POST['id']) ; $i++){
     $idd=secure($_POST["id"][$i]);
     $email= secure($_POST["email"][$i]);
+    $pass= secure($_POST["pass"][$i]);
     $class= secure($_POST["class"][$i]);
 
-        $stmtt=mysqli_prepare($conn, "UPDATE users SET email =?, class=? WHERE id=?");
-        mysqli_stmt_bind_param($stmtt,"ssi", $email, $class, $idd);
+        $stmtt=mysqli_prepare($conn, "UPDATE users SET email =?, password=?, class=? WHERE id=?");
+        mysqli_stmt_bind_param($stmtt,"sssi", $email, $pass,$class, $idd);
         mysqli_stmt_execute($stmtt);
 
         if (mysqli_stmt_affected_rows($stmtt)) {
-          $refresh_url= "useredit.php?action=update";
+          $refresh_url= "useredit.php";
          }
 
          
@@ -111,13 +132,13 @@ function secure($data){
            mysqli_stmt_bind_param($stmtd, "i", $id);
            mysqli_stmt_execute($stmtd); 
            if(mysqli_stmt_affected_rows($stmtd)){
-             $refresh_url="useredit.php?action=delete";
+            header("Location:useredit.php");
     }}}
    
    
 $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
           mysqli_stmt_execute($stmt);
-          mysqli_stmt_bind_result($stmt,$idd,$email,$password,$class);
+          mysqli_stmt_bind_result($stmt,$idd,$email,$pass,$class);
           //$rows=  mysqli_stmt_fetch($stmt);
          echo '<div class="container mt-5">';
           echo'<div class="m-3">';
@@ -141,7 +162,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
             echo "<tr>";
             echo "<td>" . "<input type='text' name ='id[]' value= ' " .secure($idd). " ' readonly>" . "</td>".
              "<td>"  ."<input type='text' name ='email[]' value= ' " .secure($email). " '>" . "</td>".
-              "<td>". "<input type='text' name ='pass[]'  value= ' " .secure($password). " '>" . "</td>".
+              "<td>". "<input type='text' name ='pass[]'  placeholder= '***********' value= ' " .secure($pass). " '>" . "</td>".
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input class="form-check-input" type="checkbox" name="ck[]" value= " '.secure($idd).' " id="defaultCheck1">' .
               
@@ -152,15 +173,13 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
             echo "</tr>";
 
           }
-echo '<input type= "submit" value= "Submit" name= "up" class="btn btn-outline-success">' . 
-'<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' ;
-          
-            
 
 
         echo'</tbody>';
         echo '</table>';
-        
+        echo '<input type= "submit" value= "Editing" name= "up" class="btn btn-outline-success">' . " " . 
+       '<input type= "submit" value= "Delete" name= "del" class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\');" >' ;
+          
         echo'</form>';
         echo' </div>';
         echo'</div>';
