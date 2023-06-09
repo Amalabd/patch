@@ -162,7 +162,7 @@ $stmt=mysqli_prepare($conn, "SELECT id,email, password, class FROM users ");
             echo "<tr>";
             echo "<td>" . "<input type='text' name ='id[]' value= ' " .secure($idd). " ' readonly>" . "</td>".
              "<td>"  ."<input type='text' name ='email[]' value= ' " .secure($email). " '>" . "</td>".
-              "<td>". "<input type='text' name ='pass[]'  placeholder= '***********' value= ' " .secure($pass). " '>" . "</td>".
+              "<td>". "<input type='password' name ='pass[]'  value= ' " .secure($pass). " '>" . "</td>".
                "<td>". "<input type='text' name ='class[]'  value= ' " .secure($class). " '>" . "</td>" .
                "<td>". '<input class="form-check-input" type="checkbox" name="ck[]" value= " '.secure($idd).' " id="defaultCheck1">' .
               
