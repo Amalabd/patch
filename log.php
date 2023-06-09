@@ -62,8 +62,8 @@ include_once("pf.php");
 <?php
 
 $mail = $pass = "";
-$message = '<div class="alert alert-secondary alert-dismissible fade show  col-3 mx-auto" role="alert">
-    <strong> OOPS !!!</strong> You dont have Permission !
+$message = '<div class="alert alert-danger alert-dismissible fade show  col-2 mx-auto" role="alert">
+    <strong>  You dont have Permission !!!</strong>
      </div>';
  
  function secure($data){
