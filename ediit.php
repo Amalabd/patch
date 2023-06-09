@@ -6,9 +6,24 @@ ini_set('session.cookie_httponly', true);
 session_start();
 include_once("pf.php");
 $user= $_SESSION['mail'];
-$clas =mysqli_query($conn, "SELECT class FROM users WHERE email= '$user' ") ;
+$clas =mysqli_query($conn, "SELECT * FROM users WHERE email= '$user' ") ;
 $clas_data = mysqli_fetch_assoc($clas);
 $classs= $clas_data['class'];
+$idd= $clas_data['id'];
+$pass= $clas_data['password'];
+
+$_SESSION['timestamp']= time();
+if(time() - $_SESSION['timestamp'] > 40) { 
+  echo"<script>alert('Will log out!');</script>";
+  session_unset();session_destroy();
+  header("Location: log.php"); 
+  exit;
+}
+
+if(empty($_SESSION['mail'])){
+  header("Location: log.php");
+}
+
 
 $id=$_GET["patch_id"];
 $sh = "SELECT * FROM patchfelder_tbl WHERE patch_id= $id";
@@ -39,6 +54,9 @@ if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
         rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>-- Edit --</title>
 </head>
 <body>
@@ -52,19 +70,46 @@ if(isset($_GET['patch_id']) && $show && mysqli_num_rows($show) > 0){
 </nav>
 <nav class="navbar navbar-expand-lg" style= "background-color:black; ">
   <div class="container-fluid">
-    <a class="navbar-brand text-white fw-bold">Patch-Plan</a>
+    <a class="navbar-brand text-white fw-bold" href= 'patchplan.php'>Patch-Plan</a>
     <span class=" collapse navbar-collapse text-white fw-bold"> Welcome to our offecial website</span>
-    <div class="d-flex text-white">
-      <a class="nav-link active text-white fw-bold " > <?php echo $user; ?>  </a>
-    <a class="nav-link active text-white fw-bold "  aria-current="page" href= 'log.php?session_unset()' role='button' aria-pressed='true'>Log-out</a>
 
+    <!----------Button ---->
+   
+
+    
+
+<div class="btn-group dropstart ">
+  <button type="button" class="btn  dropdown-toggle" style="background-color:white;" data-bs-toggle="dropdown" aria-expanded="false">
+  <i class="fa fa-bars" aria-hidden="true"></i>
+
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-dark">
+    <?php 
+    if($classs === 'a'){ 
+   echo '<li>' . '<a class="dropdown-item" aria-current="page" href= "useredit.php" role="button" aria-pressed="true">Editing-Users</a>'.'</li>'.
+    '<li>' .'<a class="dropdown-item" aria-current="page" href= "useradd.php" role="button" aria-pressed="true">Adding-Users</a>'.'</li>';
+    }
+    ?>
+    <li><a href= <?php echo'password.php?id= " '.$idd.' " ' ?> role='button' aria-pressed='true' class="dropdown-item" aria-current="page">Password-Change</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class=" dropdown-item nav-link  text-white fw-bold "  aria-current="page" href= 'log.php?session_unset()' role='button' aria-pressed='true'>Log-out</a></li>
+  </ul>
+</div>
+
+          
+    
+
+      
 </div>
   </div>
 </nav>
 
 <!------To Edit ---->
 
-<div class="container m-5">
+<h3 class=" m-5 fw-bold" style= "color:#7A003F">Editing Records</h3>
+
+<div class="container m-2">
           
           <div class="m-3">
           <form action=" " method="post">
